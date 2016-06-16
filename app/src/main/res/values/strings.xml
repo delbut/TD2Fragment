@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TD2Fragment</string>
+    <string name="account">Account</string>
+    <string name="profile">Profile</string>
+    <string name="repositories">Repositories</string>
+    <string name="viewpager">ViewPager</string>
+
+    <!--MainActivity-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string-array name="app_tabs">
+        <item>Repositories</item>
+        <item>Followers</item>
+        <item>Followed</item>
+    </string-array>
+</resources>
