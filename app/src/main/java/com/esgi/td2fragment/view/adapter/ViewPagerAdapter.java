@@ -9,6 +9,7 @@ import com.esgi.td2fragment.R;
 import com.esgi.td2fragment.fragment.FollowedFragment;
 import com.esgi.td2fragment.fragment.FollowersFragment;
 import com.esgi.td2fragment.fragment.PublicRepoFragment;
+import com.esgi.td2fragment.models.User;
 
 /**
  * Created by maxime on 16/06/16.
@@ -21,13 +22,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String[] tabTitles;
     private final int pageCount;
     private Fragment[] fragmentPages;
+    private final User user;
 
-
-    public ViewPagerAdapter(FragmentManager fm, Context context) {
+    public ViewPagerAdapter(FragmentManager fm, Context context, User user) {
         super(fm);
         tabTitles = context.getResources().getStringArray(R.array.app_tabs);
         pageCount = tabTitles.length;
         fragmentPages = new Fragment[pageCount];
+        this.user = user;
     }
 
 
@@ -37,25 +39,25 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case PAGE_PUBLIC_REPO:
                 if (fragmentPages[position] == null) {
-                    fragmentPages[position] = new PublicRepoFragment();
+                    fragmentPages[position] = PublicRepoFragment.newInstance(this.user.getPublic_repos());
                 }
                 fragment = fragmentPages[position];
                 break;
             case PAGE_FOLLOWER:
                 if (fragmentPages[position] == null) {
-                    fragmentPages[position] = new FollowersFragment();
+                    fragmentPages[position] = FollowersFragment.newInstance(this.user.getFollowers());
                 }
                 fragment = fragmentPages[position];
                 break;
             case PAGE_FOLLOWED:
                 if (fragmentPages[position] == null) {
-                    fragmentPages[position] = new FollowedFragment();
+                    fragmentPages[position] = FollowedFragment.newInstance(this.user.getFollowing());
                 }
                 fragment = fragmentPages[position];
                 break;
             default:
                 if (fragmentPages[PAGE_PUBLIC_REPO] == null) {
-                    fragmentPages[PAGE_PUBLIC_REPO] = new PublicRepoFragment();
+                    fragmentPages[PAGE_PUBLIC_REPO] = PublicRepoFragment.newInstance(this.user.getPublic_repos());
                 }
                 fragment = fragmentPages[PAGE_PUBLIC_REPO];
                 break;

@@ -28,17 +28,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener{
 
+    public static final String USER_DATA_KEY = "userSessionData";
+
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.user = this.getIntent().getParcelableExtra(USER_DATA_KEY);
 
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         this.setSupportActionBar(this.toolbar);
@@ -55,9 +59,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             headerView = nvDrawer.getHeaderView(0);
             CircleImageView circleImageView = (CircleImageView) headerView.findViewById(R.id.iv_profile);
             TextView tvName = (TextView) headerView.findViewById(R.id.nav_tv_name);
-            User currentUser = SessionData.getInstance().getCurrentUser();
-            tvName.setText(currentUser.getLogin());
-            Picasso.with(getBaseContext()).load(currentUser.getAvatar_url()).into(circleImageView);
+//            User currentUser = SessionData.getInstance().getCurrentUser();
+            tvName.setText(this.user.getLogin());
+            Picasso.with(getBaseContext()).load(this.user.getAvatar_url()).into(circleImageView);
         }
     }
 
@@ -92,25 +96,20 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
     public void selectDrawerItem(MenuItem menuItem, NavigationView navigationView) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
+        Fragment fragment;
+//        Class fragmentClass;
         switch (menuItem.getItemId()) {
             case R.id.nav_profile:
-                fragmentClass = ProfileFragment.class;
+                fragment = ProfileFragment.newInstance(user.getAvatar_url(),user.getLogin());
                 break;
             case R.id.nav_repositories:
-                fragmentClass = RepositoriesFragment.class;
+                fragment = RepositoriesFragment.newInstance(user.getLogin());
                 break;
             case R.id.nav_viewpager:
-                fragmentClass = ViewPagerFragment.class;
+                fragment = ViewPagerFragment.newInstance(user);
                 break;
             default:
-                fragmentClass = ProfileFragment.class;
-        }
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+                fragment = ProfileFragment.newInstance(user.getAvatar_url(),user.getLogin());
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

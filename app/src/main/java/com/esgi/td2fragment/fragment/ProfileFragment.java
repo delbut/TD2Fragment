@@ -20,27 +20,41 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ProfileFragment extends Fragment {
 
+    private static final String PICTURE_URL_KEY = "pictureUrl";
+    private static final String LOGIN_KEY = "login";
+
     private View rootView;
-    private CircleImageView civProfile;
-    private TextView tvUsername;
+    private String pictureUrl;
+    private String login;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            pictureUrl = bundle.getString(PICTURE_URL_KEY);
+            login = bundle.getString(LOGIN_KEY);
+        }
         initView();
 
         return this.rootView;
     }
 
     private void initView() {
-        civProfile = (CircleImageView) this.rootView.findViewById(R.id.civ_profile);
-        tvUsername = (TextView) this.rootView.findViewById(R.id.tv_username);
+        CircleImageView civProfile = (CircleImageView) this.rootView.findViewById(R.id.civ_profile);
+        TextView tvUsername = (TextView) this.rootView.findViewById(R.id.tv_username);
+        Picasso.with(getContext()).load(pictureUrl).into(civProfile);
+        tvUsername.setText(login);
+    }
 
-        User user = SessionData.getInstance().getCurrentUser();
-
-        Picasso.with(getContext()).load(user.getAvatar_url()).into(civProfile);
-        tvUsername.setText(user.getLogin());
+    public static ProfileFragment newInstance(String urlPicture, String login) {
+        ProfileFragment f = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(PICTURE_URL_KEY, urlPicture);
+        args.putString(LOGIN_KEY, login);
+        f.setArguments(args);
+        return f;
     }
 }

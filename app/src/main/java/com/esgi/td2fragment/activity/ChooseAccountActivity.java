@@ -36,7 +36,6 @@ public class ChooseAccountActivity extends BaseActivity {
                 .build();
 
         initView();
-
     }
 
     private void initView() {
@@ -57,8 +56,8 @@ public class ChooseAccountActivity extends BaseActivity {
                 GitHubAPIService.getInstance().getUser(etUsername.getText().toString(), new GitHubAPIService.ApiResult<User>() {
                     @Override
                     public void success(User res) {
-                        SessionData.getInstance().setCurrentUser(res);
-                        displayNextActivity();
+//                        SessionData.getInstance().setCurrentUser(res);
+                        displayNextActivity(res);
                     }
 
                     @Override
@@ -70,8 +69,9 @@ public class ChooseAccountActivity extends BaseActivity {
         }
     };
 
-    private void displayNextActivity() {
+    private void displayNextActivity(User res) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.USER_DATA_KEY, res);
         startActivity(intent);
         this.finish();
     }

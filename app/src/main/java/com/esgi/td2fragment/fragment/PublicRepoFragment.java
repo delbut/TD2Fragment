@@ -16,14 +16,30 @@ import com.esgi.td2fragment.utils.SessionData;
  */
 public class PublicRepoFragment extends Fragment {
 
+    private static final String PUBLIC_REPO_NUMBER_KEY = "publicRepNumber";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.ui_fragment_number, container, false);
+        int numberPubRepo = 0;
 
         TextView textView = (TextView) rootView.findViewById(R.id.number);
 
-        textView.setText(SessionData.getInstance().getCurrentUser().getPublic_repos() + " public repositories !");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            numberPubRepo = bundle.getInt(PUBLIC_REPO_NUMBER_KEY);
+        }
+
+        textView.setText(numberPubRepo + " public repositories !");
         return rootView;
+    }
+
+    public static PublicRepoFragment newInstance(int publicRep) {
+        PublicRepoFragment f = new PublicRepoFragment();
+        Bundle args = new Bundle();
+        args.putInt(PUBLIC_REPO_NUMBER_KEY, publicRep);
+        f.setArguments(args);
+        return f;
     }
 }
