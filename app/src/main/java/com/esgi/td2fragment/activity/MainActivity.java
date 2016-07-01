@@ -3,9 +3,7 @@ package com.esgi.td2fragment.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,24 +14,20 @@ import android.widget.TextView;
 
 import com.esgi.td2fragment.R;
 import com.esgi.td2fragment.fragment.ProfileFragment;
-import com.esgi.td2fragment.fragment.PublicRepoFragment;
 import com.esgi.td2fragment.fragment.RepositoriesFragment;
 import com.esgi.td2fragment.fragment.ViewPagerFragment;
 import com.esgi.td2fragment.models.User;
 import com.esgi.td2fragment.utils.SessionData;
-import com.esgi.td2fragment.view.adapter.ViewPagerAdapter;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener{
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,71 +55,36 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         }
     }
 
-    private void setFirstItemNavigationView() {
-        nvDrawer.setCheckedItem(R.id.nav_profile);
-        nvDrawer.getMenu().performIdentifierAction(R.id.nav_profile, 0);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-    }
-
-    private void setupDrawerContent(final NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem, navigationView);
-                        return true;
-                    }
-                });
-    }
-    protected void showHideActionBar(boolean isShowNeeded) {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            if (isShowNeeded) {
-                actionBar.show();
-            } else {
-                actionBar.hide();
-            }
-        }
-    }
     public void selectDrawerItem(MenuItem menuItem, NavigationView navigationView) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
         switch (menuItem.getItemId()) {
             case R.id.nav_profile:
-                fragmentClass = ProfileFragment.class;
+                fragment = ProfileFragment.newInstance();
                 break;
             case R.id.nav_repositories:
-                fragmentClass = RepositoriesFragment.class;
+                fragment = RepositoriesFragment.newInstance();
                 break;
             case R.id.nav_viewpager:
-                fragmentClass = ViewPagerFragment.class;
+                fragment = ViewPagerFragment.newInstance();
                 break;
             default:
-                fragmentClass = ProfileFragment.class;
+                fragment = ProfileFragment.newInstance();
         }
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.flContent, fragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.flContent, fragment)
+            .commit();
 
         navigationView.setCheckedItem(menuItem.getItemId());
         setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
     }
 
     @Override
@@ -147,5 +106,36 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    protected void showHideActionBar(boolean isShowNeeded) {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            if (isShowNeeded) {
+                actionBar.show();
+            } else {
+                actionBar.hide();
+            }
+        }
+    }
+
+    private void setFirstItemNavigationView() {
+        nvDrawer.setCheckedItem(R.id.nav_profile);
+        nvDrawer.getMenu().performIdentifierAction(R.id.nav_profile, 0);
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(final NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    selectDrawerItem(menuItem, navigationView);
+                    return true;
+                }
+            });
     }
 }

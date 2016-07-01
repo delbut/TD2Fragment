@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.esgi.td2fragment.R;
+import com.esgi.td2fragment.models.Repository;
 
 /**
  * Created by maxime on 16/06/16.
@@ -26,5 +27,10 @@ public class RepositoriesViewHolder extends RecyclerView.ViewHolder {
 
     public TextView getTvDescribe() {
         return tvDescribe;
+    }
+
+    public void bind(Repository repository) {
+        getTvDescribe().setText(repository.getDescription());
+        getTvTitle().setText(repository.getName());
     }
 }

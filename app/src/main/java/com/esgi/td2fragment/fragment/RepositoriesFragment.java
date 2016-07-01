@@ -3,7 +3,6 @@ package com.esgi.td2fragment.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import com.esgi.td2fragment.network.GitHubAPIService;
 import com.esgi.td2fragment.utils.SessionData;
 import com.esgi.td2fragment.view.adapter.RepositoriesAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,21 +23,28 @@ import java.util.List;
  */
 public class RepositoriesFragment extends Fragment {
 
-    private View rootView;
     private RecyclerView recyclerView;
     private RepositoriesAdapter adapter;
+
+    public static Fragment newInstance() {
+        return new RepositoriesFragment();  //Correction Exemple de newInstance sans arguments
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.rootView = inflater.inflate(R.layout.fragment_repositories, container, false);
+        return inflater.inflate(R.layout.fragment_repositories, container, false);
+    }
 
-        recyclerView = (RecyclerView) this.rootView.findViewById(R.id.rl_repo);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.rl_repo);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(llm);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         loadListRepo();
-        return this.rootView;
     }
 
     private void loadListRepo() {

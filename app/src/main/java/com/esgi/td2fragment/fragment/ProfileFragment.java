@@ -24,6 +24,10 @@ public class ProfileFragment extends Fragment {
     private CircleImageView civProfile;
     private TextView tvUsername;
 
+    public static Fragment newInstance(){
+        return new ProfileFragment(); //Correction Exemple de newInstance sans arguments
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

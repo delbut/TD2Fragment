@@ -33,34 +33,26 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment;
         switch (position) {
             case PAGE_PUBLIC_REPO:
                 if (fragmentPages[position] == null) {
                     fragmentPages[position] = new PublicRepoFragment();
                 }
-                fragment = fragmentPages[position];
                 break;
             case PAGE_FOLLOWER:
                 if (fragmentPages[position] == null) {
                     fragmentPages[position] = new FollowersFragment();
                 }
-                fragment = fragmentPages[position];
                 break;
             case PAGE_FOLLOWED:
                 if (fragmentPages[position] == null) {
                     fragmentPages[position] = new FollowedFragment();
                 }
-                fragment = fragmentPages[position];
                 break;
             default:
-                if (fragmentPages[PAGE_PUBLIC_REPO] == null) {
-                    fragmentPages[PAGE_PUBLIC_REPO] = new PublicRepoFragment();
-                }
-                fragment = fragmentPages[PAGE_PUBLIC_REPO];
                 break;
         }
-        return fragment;
+        return fragmentPages[position];
     }
 
     @Override
