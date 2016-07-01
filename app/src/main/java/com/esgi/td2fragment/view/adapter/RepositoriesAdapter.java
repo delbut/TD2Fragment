@@ -32,9 +32,7 @@ public class RepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(holder instanceof RepositoriesViewHolder) {
             RepositoriesViewHolder repositoriesViewHolder = (RepositoriesViewHolder) holder;
             Repository repository = this.repositories.get(position);
-
-            repositoriesViewHolder.getTvDescribe().setText(repository.getDescription());
-            repositoriesViewHolder.getTvTitle().setText(repository.getName());
+            repositoriesViewHolder.bind(repository);
         }
     }
 

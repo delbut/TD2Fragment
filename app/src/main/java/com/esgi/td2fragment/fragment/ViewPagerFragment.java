@@ -40,4 +40,7 @@ public class ViewPagerFragment extends Fragment {
 
     }
 
+    public static ViewPagerFragment newInstance() {
+        return new ViewPagerFragment();  //Correction Exemple de newInstance sans arguments
+    }
 }
